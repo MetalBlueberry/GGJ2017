@@ -62,10 +62,13 @@ class Persona {
     if ( carta!=null) {
       carta.dispose();
     }
-    String[] files = new String[] { 
+   /* String[] files = new String[] { 
       "ghost0.png", "ghost1.png", "ghost2.png"
+    };*/
+    int imagen = (int)random(10,30);
+   String[] files = new String[] { 
+       imagen+".png", imagen+".png", imagen+".png"
     };
-
 
     carta = new Carta(ventana, this, x+w*(position%Columnas_Persona), y+h*floor((position/Columnas_Persona)), w, h, files, "", index);  
     carta.addEventHandler(ventana, "Carta_click");
@@ -107,6 +110,17 @@ class MazoCartas<T>
   public void Reiniciar() {
     mezclado = new ArrayList<T>(original);
     Collections.shuffle(mezclado);
+    float alturaCarta = 0.18; //height*(1-(alturaCarta*4))
+    for (int j = 0; j < mezclado.size(); j++) {
+      Persona p = null;
+      try {
+        p = (Persona)mezclado.get(j);
+      }
+      catch(Exception ex) {
+      }
+      if (p==null)return;
+      p.display(0, height*0.1, width/Columnas_Persona, height*alturaCarta, j);
+    }
   }
   public void Add(T carta) {
     original.add(carta);
@@ -118,6 +132,14 @@ class MazoCartas<T>
     println(mezclado.size());
     println(original.size());
     return mezclado.get(index);
+  }
+  public T byid(int id) {
+    for (int j = 0; j < mezclado.size(); j++) {
+      if (((Persona)at(j)).index == id) {
+        return (T)at(j);
+      }
+    }
+    return null;
   }
   public int size() {
     return mezclado.size();
@@ -154,7 +176,7 @@ class Carta extends GImageButton {
       noFill();
       stroke(255, 255, 0);
       strokeWeight(5); 
-      rect(x, y, width, height);
+      rect(x, y, width, height); //Recuado de seleccion
     }
   }
   void progressBar( float y, int interesado, int vendido, int div, String inicial) {
@@ -211,7 +233,7 @@ class Carta extends GImageButton {
 }
 
 public void Economia_click(GButton button, GEvent event) {
-  println(button.getText());
+  //println(button.getText());
   if (button.getText() == "Avanzar") {
     economia.Avanzar();
   } else if (button.getText() == "Reset") {
@@ -256,6 +278,7 @@ class EconomiaGlobal extends GImageButton {
   }
   GButton Reset;
   public void Reset() {
+    print("RESET");
     Acciones.Reiniciar();
     valor = new Stats(0, 0, 0, 0);
   }
@@ -316,8 +339,9 @@ public void Acciones_Click(GButton button, GEvent event) {
 
   int id = Integer.valueOf(button.getText().split(" ")[1]);
   println(id);
-    println("mostraro: "+acciones.mostrar);
-  Persona p = personas.at(acciones.mostrar);
+  println("mostraro: "+acciones.mostrar);
+  Persona p = personas.byid(acciones.mostrar);
+  println("Persona: "+ p.index);
   println("persona");
   if (button.getText().startsWith("interesar")) {
     println("interesar");
@@ -330,9 +354,9 @@ public void Acciones_Click(GButton button, GEvent event) {
 class AccionesSobrePersonas extends GImageButton {
   public int mostrar = 0;
   List<GButton> interesado = new ArrayList<GButton>();
-  ;
+
   List<GButton> vendido = new ArrayList<GButton>();
-  ;
+
 
   AccionesSobrePersonas(PApplet ventana, float x, float y, float w, float h) {
     super(ventana, x, y, w, h, null);

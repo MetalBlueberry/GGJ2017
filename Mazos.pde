@@ -1,5 +1,6 @@
 void mazo1(MazoCartas maz) {
-
+  AutoIndex_Persona  = 0;
+  maz.Vaciar();
   maz.Add(new Persona(this, new Stats(new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}), new Stats(new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}))); 
   maz.Add(new Persona(this, new Stats(new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}), new Stats(new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}))); 
   maz.Add(new Persona(this, new Stats(new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}), new Stats(new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}))); 
@@ -60,6 +61,7 @@ void mazo1(MazoCartas maz) {
 }
 
 void mazoAcciones1(EconomiaGlobal eco, MazoCartas maz) {
+    maz.Vaciar();
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       maz.Add(eco.new Accion(1, j));
