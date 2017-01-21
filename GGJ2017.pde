@@ -1,6 +1,13 @@
+import g4p_controls.*;
+
 import processing.net.*;
 
 MazoCartas<Persona> j1 = new MazoCartas<Persona>();  
+
+
+Server s;
+
+
 
 void setup() {
 
@@ -58,8 +65,23 @@ void setup() {
    print( p.toString());
   }
   }while(p!=null);
+  try{
+  s = new Server(this, 2017); // Start a simple server on a port
+  }catch (Exception e){
+    print("error al usar este puerto");
+  }
+  size(1440,900);
+  //fullScreen();
+  surface.setLocation(0,0);
+  
+  createGUI();
+  ip.setText(Server.ip());
 }
 
 
 void draw() {
+  background(0);
+
+  
+  
 }
