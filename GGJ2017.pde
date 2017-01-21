@@ -2,86 +2,64 @@ import g4p_controls.*;
 
 import processing.net.*;
 
-MazoCartas<Persona> j1 = new MazoCartas<Persona>();  
+MazoCartas<Persona> personas = new MazoCartas<Persona>();  
+EconomiaGlobal economia;
+AccionesSobrePersonas acciones ;
+
+List<Jugador> jugadores = new ArrayList<Jugador>();
 
 
 Server s;
 
+//cuadricula
+int AutoIndex_Persona = 0; // se incrementa cada vez que se crea una persona
+int Columnas_Persona = 10;
 
-
+//jugadores
+int AutoIndex_Jugadores = 1; // se incrementa cada vez que se crea una persona
 void setup() {
 
-  j1.Add(new Persona(new Stats(new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}), new Stats(new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}))); 
-  j1.Add(new Persona(new Stats(new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}), new Stats(new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}))); 
-  j1.Add(new Persona(new Stats(new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}), new Stats(new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}))); 
-  j1.Add(new Persona(new Stats(new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}), new Stats(new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}))); 
-  j1.Add(new Persona(new Stats(new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}, new int[] {0, 1}), new Stats(new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}, new int[] {1, 3}))); //5
+  createGUI();
 
-  j1.Add(new Persona(new Stats(new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}), new Stats(new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}), new Stats(new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10})));
-  j1.Add(new Persona(new Stats(new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}), new Stats(new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10})));
-  j1.Add(new Persona(new Stats(new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}), new Stats(new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10})));
-  j1.Add(new Persona(new Stats(new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}), new Stats(new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10}, new int[] {1, 10})));//5
+  mazo1(personas);
 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); //10
-
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); 
-  j1.Add(new Persona(new Stats(new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}, new int[] {1, 5}), new Stats(new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}, new int[] {3, 8}))); //10
-
-  j1.Add(new Persona(new Stats(new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}), new Stats(new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12})));
-  j1.Add(new Persona(new Stats(new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}), new Stats(new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12})));
-  j1.Add(new Persona(new Stats(new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}), new Stats(new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12})));
-  j1.Add(new Persona(new Stats(new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}), new Stats(new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12})));
-  j1.Add(new Persona(new Stats(new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}), new Stats(new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12})));
-  j1.Add(new Persona(new Stats(new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}), new Stats(new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12})));
-  j1.Add(new Persona(new Stats(new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}), new Stats(new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12})));
-  j1.Add(new Persona(new Stats(new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}), new Stats(new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12})));
-  j1.Add(new Persona(new Stats(new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}), new Stats(new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12})));
-  j1.Add(new Persona(new Stats(new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}), new Stats(new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12})));
-  j1.Add(new Persona(new Stats(new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}, new int[] {4, 8}), new Stats(new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12}, new int[] {6, 12})));//10
-  
-  j1.Reiniciar();
+  personas.Reiniciar();
   Persona p;
-  do{
-  p = j1.Robar();
-  if(p !=null){
-   print( p.toString());
+  int iterator = 0;
+  do {
+    p = personas.at(iterator);
+    if (p !=null) {
+      print(p.toString());
+      float alturaCarta = 0.18; //height*(1-(alturaCarta*4))
+      p.display(0, 0, width/Columnas_Persona, height*alturaCarta, iterator);
+      iterator++;
+    }
+  } while (iterator<personas.size());
+  try {
+    s = new Server(this, 2017); // Start a simple server on a port
   }
-  }while(p!=null);
-  try{
-  s = new Server(this, 2017); // Start a simple server on a port
-  }catch (Exception e){
+  catch (Exception e) {
     print("error al usar este puerto");
   }
-  size(1440,900);
+  size(1440, 900);
+  frameRate(15);
   //fullScreen();
-  surface.setLocation(0,0);
-  
-  createGUI();
+  surface.setLocation(0, 0);
+
   ip.setText(Server.ip());
+
+
+  economia = new EconomiaGlobal(this, width*0.2, height*0.91, width*0.2, height*0.09);
+  acciones = new AccionesSobrePersonas(this, width*0.5, height*0.91, width*0.5, height*0.09);
+  jugadores.add(new Jugador());
+  jugadores.add(new Jugador());
+  jugadores.add(new Jugador());
+  jugadores.add(new Jugador());
+  acciones.GenerarControles(this);
+  background(0);
 }
 
 
 void draw() {
   background(0);
-
-  
-  
 }
