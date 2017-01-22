@@ -1,13 +1,16 @@
 import java.util.Collections;
 import java.util.*;
 
-String[] Iniciales = {"A", "M", "O", "T"};
+String[] Iniciales = {"J", "D", "H", "P"};
+String[] NombreCompleto ={"Jugabilidad", "Diseño", "Historia", "Precio"};
 class Stats
 {
   int Alimentacion;
   int Moda;
   int Ocio;
   int Tecnologia;
+
+  int Fabricacion = 0;
 
   Stats(int Alimentacion, int Moda, int Ocio, int Tecnologia) {
     this.Tecnologia = Tecnologia;
@@ -21,7 +24,40 @@ class Stats
     this.Alimentacion = floor(random(Alimentacion[0], Alimentacion[1]+1));
     this.Ocio = floor(random(Ocio[0], Ocio[1]+1));
   }
-
+  public void set(int index, int valor) {
+    switch(index) {
+    case 0:
+      Alimentacion = valor;
+      break;
+    case 1:
+      Moda = valor;
+      break;
+    case 2:
+      Ocio = valor;
+      break;
+    case 3:
+      Tecnologia = valor;
+      break;
+    case 4:
+      Fabricacion = valor;
+      break;
+    }
+  }
+  public int get(int index) {
+    switch(index) {
+    case 0:
+      return Alimentacion;
+    case 1:
+      return Moda;
+    case 2:
+      return Ocio;
+    case 3:
+      return Tecnologia;
+    case 4:
+      return Fabricacion;
+    }
+    return 0;
+  }
   public String toString() {
     return "T: " + Tecnologia + " M: " + Moda + " A: " + Alimentacion + " O: " + Ocio;
   }
@@ -62,12 +98,12 @@ class Persona {
     if ( carta!=null) {
       carta.dispose();
     }
-   /* String[] files = new String[] { 
-      "ghost0.png", "ghost1.png", "ghost2.png"
-    };*/
-    int imagen = (int)random(10,30);
-   String[] files = new String[] { 
-       imagen+".png", imagen+".png", imagen+".png"
+    /* String[] files = new String[] { 
+     "ghost0.png", "ghost1.png", "ghost2.png"
+     };*/
+    int imagen = (int)random(10, 30);
+    String[] files = new String[] { 
+      imagen+".png", imagen+".png", imagen+".png"
     };
 
     carta = new Carta(ventana, this, x+w*(position%Columnas_Persona), y+h*floor((position/Columnas_Persona)), w, h, files, "", index);  
@@ -110,6 +146,8 @@ class MazoCartas<T>
   public void Reiniciar() {
     mezclado = new ArrayList<T>(original);
     Collections.shuffle(mezclado);
+
+    //Codigo para dibujar
     float alturaCarta = 0.18; //height*(1-(alturaCarta*4))
     for (int j = 0; j < mezclado.size(); j++) {
       Persona p = null;

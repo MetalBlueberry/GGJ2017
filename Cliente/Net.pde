@@ -1,22 +1,27 @@
 void Net() {
   if (myClient != null && myClient.available()>0) {
-   // try {
+    try {
       println("Nuevo mensaje");
       String input=myClient.readStringUntil('\n');
       println(input);  
       String[] Spliter=split(input, '&');
-      println("Spliter0: "+Spliter[0]);  
-      println("Spliter1: "+Spliter[1]); 
-     
+     // println("Spliter0: "+Spliter[0]);  
+     // println("Spliter1: "+Spliter[1]); 
+
       if (Spliter[0].equals("jugador")) {
-       jugador.setId(Integer.valueOf(Spliter[1].trim()));
-        ocultar=false;
-        Menu1ocultar(ocultar);
-        mostrar=true;
-     
+        jugador.setId(Integer.valueOf(Spliter[1].trim()));
       } else if (Spliter[0].equals("carta")) {
+         println("Nuevo carta");
+        for ( int j = 0; j < Cartas.size(); j++) {
+          Carta carta = Cartas.get(j);
+          if (carta.id == -1) {
+            carta.setDatos(Spliter[1]);
+            break;
+          }
+        }
       }
-    //}
-    //catch(Exception ex) {    }
+    }
+    catch(Exception ex) {
+    }
   }
 }

@@ -2,6 +2,8 @@ class Jugador extends GImageButton {
   public int id = 0;
   public int[] atributos = new int[5];
 
+  
+
   Jugador(PApplet ventana, float x, float y, float w, float h) {
     super(ventana, x, y, w, h, null);
     setVisible(false);
@@ -17,7 +19,14 @@ class Jugador extends GImageButton {
     atributos[3] = a4;
     atributos[4] = a5;
   }
-  public void draw(){
-    text("Mi id es: "+id,width*0.05,height*0.5);
+  public void draw() {
+    if (id == 0) {
+      textSize(22);
+      text("Conectate al servidor", x+width*0.05, y+height*0.1);
+    } else {
+      textSize(22);
+      text("Eres el jugador: "+id, x+width*0.05, y+height*0.1);
+      
+    }
   }
 }

@@ -17,6 +17,7 @@ int Columnas_Persona = 10;
 
 //jugadores
 int AutoIndex_Jugadores = 1; // se incrementa cada vez que se crea una persona
+int AutoIndex_CartaJugador = 0; // se incrementa cada vez que se crea una carta de jugador
 void setup() {
 
   createGUI();
@@ -39,7 +40,8 @@ void setup() {
 
   economia = new EconomiaGlobal(this, width*0.2, height*0, width*0.2, height*0.09);
   acciones = new AccionesSobrePersonas(this, width*0.5, height*0, width*0.5, height*0.09);
-
+  
+  mazoJugador1(mazoJugadores);
 
   background(0);
 }
