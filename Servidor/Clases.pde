@@ -58,8 +58,27 @@ class Stats
     }
     return 0;
   }
+  public Stats add(Stats other) {
+    // Stats s = new Stats(0, 0, 0, 0);
+    for ( int j = 0; j < 5; j++) {
+      set(j, get(j)+other.get(j));
+    }
+    return this;
+  }
+  public void copy(Stats other) {
+    for ( int j = 0; j < 5; j++) {
+      set(j, other.get(j));
+    }
+  }
   public String toString() {
     return "T: " + Tecnologia + " M: " + Moda + " A: " + Alimentacion + " O: " + Ocio;
+  }
+  public String send() {
+    String temp = "atributos&";
+    for ( int j = 0; j < 5; j++) {
+      temp += j+"%"+get(j)+"%";
+    }
+    return temp;
   }
 }
 
@@ -101,9 +120,9 @@ class Persona {
     /* String[] files = new String[] { 
      "ghost0.png", "ghost1.png", "ghost2.png"
      };*/
-    int imagen = (int)random(10, 30);
+    int imagen = 1;//(int)random(10, 30);
     String[] files = new String[] { 
-      imagen+".png", imagen+".png", imagen+".png"
+      imagen+"A.png", imagen+"A.png", imagen+"A.png"
     };
 
     carta = new Carta(ventana, this, x+w*(position%Columnas_Persona), y+h*floor((position/Columnas_Persona)), w, h, files, "", index);  
@@ -148,7 +167,7 @@ class MazoCartas<T>
     Collections.shuffle(mezclado);
 
     //Codigo para dibujar
-    float alturaCarta = 0.18; //height*(1-(alturaCarta*4))
+    float alturaCarta = 0.17; //height*(1-(alturaCarta*4))
     for (int j = 0; j < mezclado.size(); j++) {
       Persona p = null;
       try {
@@ -210,9 +229,10 @@ class Carta extends GImageButton {
     progressBar(super.getHeight()*0.7, parent.interesado.Moda, parent.vendido.Moda, 13, Iniciales[1]);
     progressBar(super.getHeight()*0.8, parent.interesado.Ocio, parent.vendido.Ocio, 13, Iniciales[2]);
     progressBar(super.getHeight()*0.9, parent.interesado.Tecnologia, parent.vendido.Tecnologia, 13, Iniciales[3]);
+    //seleccion de servidor
     if (acciones.mostrar == index) {
       noFill();
-      stroke(255, 255, 0);
+      stroke(255, 255, 255);
       strokeWeight(5); 
       rect(x, y, width, height); //Recuado de seleccion
     }
@@ -258,9 +278,10 @@ class Carta extends GImageButton {
       stroke(0);
       for (int j = 0; j<jugadores.size(); j++) {
         if (parent.leInteresa.contains(j)) {
-          fill(0, 255, 0);
+          //fill(0, 255, 0);
+          fill(coloresJugadores[j]);
         } else {
-          fill(255, 0, 0);
+          fill(255, 255, 255);
         }
         rect(xoff+j*divs, y+yoff, divs, super.getHeight()*0.1);
       }
@@ -392,7 +413,6 @@ public void Acciones_Click(GButton button, GEvent event) {
 class AccionesSobrePersonas extends GImageButton {
   public int mostrar = 0;
   List<GButton> interesado = new ArrayList<GButton>();
-
   List<GButton> vendido = new ArrayList<GButton>();
 
 
@@ -415,15 +435,25 @@ class AccionesSobrePersonas extends GImageButton {
       }
     }
     for (int j = 0; j<jugadores.size(); j++) {
-      GButton box = new GButton(ventana, x+(j*width/jugadores.size()), y + height*1/4, width/jugadores.size(), height/4);
+      GButton box = new GButton(ventana, x+(j*width/jugadores.size()), y + height*3/4, width/jugadores.size()/2, height/4);
       box.setText("interesar " +j);
       box.addEventHandler(ventana, "Acciones_Click");
       interesado.add(box);
-      box = new GButton(ventana, x+(j*width/jugadores.size()), y + height*3/4, width/jugadores.size(), height*1/4);
+      box = new GButton(ventana, x+(j*width/jugadores.size()+width/jugadores.size()/2), y + height*3/4, width/jugadores.size()/2, height*1/4);
       box.setText("vender " +j);
       vendido.add(box);
     }
   }
   public void draw() {
+    //if (isVisible()) {
+    for (int j = 0; j<jugadores.size(); j++) {
+      float posx = j*width/jugadores.size();
+      float posy = 0;
+      float dimWidth = width/jugadores.size();
+      float dimHeight = height*3/4;
+      fill(coloresJugadores[j]);
+      rect(x+posx, y+posy, dimWidth, dimHeight);
+    }
+    // }
   }
 }

@@ -10,6 +10,7 @@ void Net() {
 
       if (Spliter[0].equals("jugador")) {
         jugador.setId(Integer.valueOf(Spliter[1].trim()));
+        jugador.setColor(Integer.valueOf(Spliter[2].trim()));
       } else if (Spliter[0].equals("carta")) {
          println("Nuevo carta");
         for ( int j = 0; j < Cartas.size(); j++) {
@@ -24,4 +25,10 @@ void Net() {
     catch(Exception ex) {
     }
   }
+}
+void net_jugarCarta(int n){
+  myClient.write("jugar&"+n+"\n");
+}
+void net_descartarCarta(int n){
+  myClient.write("descartar&"+n+"\n");
 }
